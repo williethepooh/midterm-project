@@ -82,9 +82,22 @@ function Sidebar() {
 function Dashboard({ transactions }) {
   const [typeFilter, setTypeFilter] = useState('all');
   const [categoryFilter, setCategoryFilter] = useState('all');
-  const [hideBalance, setHideBalance] = useState(false);
-  const [hideIncome, setHideIncome] = useState(false);
-  const [hideExpense, setHideExpense] = useState(false);
+  
+  const [hideBalance, setHideBalance] = useState(() => localStorage.getItem('budgetly_hide_balance') === 'true');
+  const [hideIncome, setHideIncome] = useState(() => localStorage.getItem('budgetly_hide_income') === 'true');
+  const [hideExpense, setHideExpense] = useState(() => localStorage.getItem('budgetly_hide_expense') === 'true');
+
+  useEffect(() => {
+    localStorage.setItem('budgetly_hide_balance', hideBalance);
+  }, [hideBalance]);
+
+  useEffect(() => {
+    localStorage.setItem('budgetly_hide_income', hideIncome);
+  }, [hideIncome]);
+
+  useEffect(() => {
+    localStorage.setItem('budgetly_hide_expense', hideExpense);
+  }, [hideExpense]);
 
   const { filteredTransactions, income, expense, balance, incomeCount, expenseCount } = useMemo(() => {
     let inc = 0, exp = 0, incCnt = 0, expCnt = 0;
